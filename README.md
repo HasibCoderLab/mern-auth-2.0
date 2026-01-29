@@ -66,3 +66,9 @@ Password Hassing
 ```
 npm i bcryptjs
 ```
+
+Node Mailer
+
+```
+npm i nodemailer
+````

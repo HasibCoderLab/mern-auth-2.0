@@ -12,7 +12,7 @@ app.use(cookieParser());
 // app.use(cors())
 
 
-app.use("/",authRouter)
+app.use("/api/auth",authRouter)
 
 const port = process.env.PORT || 4000
 
