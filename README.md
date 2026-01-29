@@ -61,3 +61,8 @@ npm install cookie-parser
 ```
 npm install cors
 ````
+
+Password Hassing
+```
+npm i bcryptjs
+```

@@ -1,5 +1,6 @@
 import { User } from "../models/userModel.js";
 
+
 export const register = async (req,res) =>{
 try {
 const {name,password,email} = req.body
@@ -11,7 +12,10 @@ const {name,password,email} = req.body
     if (existUser) {
         return res.status(400).json({message:"user already exist"});
     }
-    
+
+    // =============  Password Hass =====
+    const hassPassword = await bc
+
 } catch (error) {
     return res.status(500).json({message:"Internal Server Error"});
 }
