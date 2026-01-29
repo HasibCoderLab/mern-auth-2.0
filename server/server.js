@@ -8,10 +8,9 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors())
 
-app.get("/",(req,res) =>{
-    res.send("API Done")
-});
+
 
 
 const port = process.env.PORT || 4000
