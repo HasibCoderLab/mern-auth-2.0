@@ -20,6 +20,11 @@ npm i nodemon
 ```
 npm i dotenv
 ```
+# Mongoose(MongoDB)
+```
+npm i mongoose
+```
+
 # Json Web token (jwt)
 ```
 npm i jwt
