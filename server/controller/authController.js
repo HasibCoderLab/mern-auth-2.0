@@ -52,13 +52,14 @@ export const register = async (req, res) => {
         );
 
     } catch (error) {
-        return res.status(500).json({ message: "Internal Server Error", });
+        return res.status(500).json({ message: "Internal Server Error", success: false, message: error.message });
+
     }
 }
 
 
 // ============== || Login [APIs] || ======== 
-export const login = async (req,res) => {
+export const login = async (req, res) => {
     const { email, password } = req.body
     if (!email || !password) {
         return res.json({ success: false, message: 'Email and Password are required ' })
@@ -84,13 +85,29 @@ export const login = async (req,res) => {
         });
 
         return res.status(200).json({
-           user:{
-            name:user.name,
-            email:user.email,
-            
-           } 
+            user: {
+                name: user.name,
+                email: user.email,
+
+            }
         });
     } catch (error) {
-        return res.status(500).json({ message: "Internal Server Error", });
+        return res.status(500).json({ message: "Internal Server Error", success: false, message: error.message });
+
+    }
+}
+
+
+// ===============  logout [APIs] ===========
+
+export const logout = async (req, res) => {
+    try {
+        res.clearCookie("token", {
+            httpOnly: true,
+            secure: process.env
+        });
+    } catch (error) {
+        return res.status(500).json({ message: "Internal Server Error", success: false, message: error.message });
+
     }
 }
