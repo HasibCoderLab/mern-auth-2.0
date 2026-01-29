@@ -11,12 +11,12 @@ app.use(cookieParser());
 
 app.get("/",(req,res) =>{
     res.send("API Done")
-})
+});
 
 
 const port = process.env.PORT || 4000
 
-app.listen = (port , () =>{
+app.listen(port , () =>{
     connectDB()
 console.log(`Server Stated at ${port}`);
 
