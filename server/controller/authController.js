@@ -57,8 +57,8 @@ export const register = async (req, res) => {
 }
 
 
-// ==============  Login ========
-export const login = async () => {
+// ============== || Login [APIs] || ======== 
+export const login = async (req,res) => {
     const { email, password } = req.body
     if (!email || !password) {
         return res.json({ success: false, message: 'Email and Password are required ' })
@@ -74,6 +74,22 @@ export const login = async () => {
         if (!isMatch) {
             return res.status(400).json({ message: "Incorrect Password" });
         }
+        // ================= Token + cookie ==========
+        let token = await generateToken(user.id);
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            maxAge: 7 * 24 * 60 * 60 * 1000
+        });
+
+        return res.status(200).json({
+           user:{
+            name:user.name,
+            email:user.email,
+            
+           } 
+        });
     } catch (error) {
         return res.status(500).json({ message: "Internal Server Error", });
     }
