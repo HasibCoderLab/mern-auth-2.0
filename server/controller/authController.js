@@ -1,7 +1,7 @@
 import { generateToken } from "../config/token.js";
 import { User } from "../models/userModel.js";
 import bcrypt from "bcryptjs";
-
+import { transporter } from "../config/nodemailer.js";
 
 export const register = async (req, res) => {
     try {
@@ -19,7 +19,7 @@ export const register = async (req, res) => {
         const hassPassword = await bcrypt.hash(password, 11);
 
 
-        const user = User.create({
+        const user = await User.create({
             name,
             email,
             password: hassPassword
@@ -39,10 +39,21 @@ export const register = async (req, res) => {
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
 
+        // ===== Sending Weccome SMS ==============
+
+        const mailOPtions = {
+            from: process.env.SENDER_EMAIL,
+            to: email,
+            subject: "Welcome To Our  Website",
+            text: `Welcome to our website .Your account has been created with email id : ${email}`
+        }
+        await transporter.sendMail(mailOPtions);
 
 
-
+        // ================ Success message  ===========
         return res.status(201).json({
+            success:true,
+            message:"user successfuly create",
             user: {
                 name, email
             }
