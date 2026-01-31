@@ -3,6 +3,8 @@ import { User } from "../models/userModel.js";
 import bcrypt from "bcryptjs";
 import { transporter } from "../config/nodemailer.js";
 
+// ===============  register [APIs] ===========
+
 export const register = async (req, res) => {
     try {
         const { name, password, email } = req.body
@@ -52,8 +54,8 @@ export const register = async (req, res) => {
 
         // ================ Success message  ===========
         return res.status(201).json({
-            success:true,
-            message:"user successfuly create",
+            success: true,
+            message: "user successfuly create",
             user: {
                 name, email
             }
@@ -69,6 +71,7 @@ export const register = async (req, res) => {
 
 
 // ============== || Login [APIs] || ======== 
+
 export const login = async (req, res) => {
     const { email, password } = req.body
     if (!email || !password) {
@@ -122,3 +125,74 @@ export const logout = async (req, res) => {
 
     }
 }
+
+
+// ========  Send Verification  OTP  to the User's Email [APIs] ==============
+export const sendVerifyOtp = async (req, res) => {
+
+    try {
+        const { userId } = req.body;
+        // ========== Check user ============
+        const user = await User.findById(userId);
+        if (user.isAccountVerified) {
+            return res.status(400).json({ success: false, message: "Account Already verified" });
+        }
+
+        // ============= OTP =============
+        const otp = String(Math.floor(100000 + Math.random() * 900000));
+        user.verifyOtp = otp;
+        user.verifyOtpExpireAt = Date.now() + 24 * 60 * 60 * 1000;
+        await user.save();
+
+        // ============== Mail ==============
+
+        const mailOPtions = {
+            from: process.env.SENDER_EMAIL,
+            to: user.email,
+            subject: "Account Verification OTP",
+            text: `Your OTP is ${otp} . verify your account using  this OTP `
+        }
+
+        await transporter.sendMail(mailOPtions);
+
+        res.status(200).json({ success: true, message: "Verification OTP Sent on Email" })
+    } catch (error) {
+        return res.status(500).json({ success: false, message: error.message });
+    }
+}
+
+
+// =============== verufy Email [APIs] =========
+
+export const verifyEmail = async (req,res) => {
+    const { userId, otp } = req.body;
+    if (!userId || !otp) {
+        return res.status(400).json({ success: false, message: "Missing Details" });
+    }
+    try {
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(400).json({ success: false, message: "User not found" });
+        }
+        //  ============ It's Valid OTP ? ============
+        if (user.verifyOtp === '' || user.verifyOtp !== otp) {
+            return res.status(400).json({ success: false, message: "Invalid OPT" });
+
+        }
+        //  ============ Check Expired OTP ? ============
+        if (user.verifyOtpExpireAt < Date.new()) {
+            return res.status(400).json({ success: false, message: "OTP Expired" });
+        }
+
+        user.isAccountVerified = true;
+        user.verifyOtp="";
+        user.verifyOtpExpireAt=0;
+        await user.save();
+        return res.status(200).json({success:true , message:"Email Verified successfully"});
+    } catch (error) {
+        return res.status(500).json({ success: false, message: error.message });
+
+    }
+}
+
