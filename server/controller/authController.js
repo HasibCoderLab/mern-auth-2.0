@@ -7,20 +7,21 @@ import { transporter } from "../config/nodemailer.js";
 
 export const register = async (req, res) => {
     try {
+        // ============ Input Details  [Step 1]  ===========
         const { name, password, email } = req.body
         if (!name || !password || !email) {
             return res.status(400).json({ message: "Send all details" });
         };
-        // ======= Check User ====
+        // ======= Check User [ Step 2]====
         let existUser = await User.findOne({ email });
         if (existUser) {
             return res.status(400).json({ message: "user already exist" });
         }
 
-        // =============  Password Hass =====
+        // =============  Password Hass [Step 3] =====
         const hassPassword = await bcrypt.hash(password, 11);
 
-
+// ============== Create User [ Step 4] ==================
         const user = await User.create({
             name,
             email,
@@ -28,11 +29,11 @@ export const register = async (req, res) => {
         });
 
 
-        console.log(user);
+        // console.log(user);
 
 
 
-        // ==========  Token + cookie  ===========
+        // ==========  Token + cookie  [Step 5] ===========
         let token = await generateToken(user._id);
         res.cookie("token", token, {
             httpOnly: true,
