@@ -142,7 +142,7 @@ export const sendVerifyOtp = async (req, res) => {
         // ============= OTP =============
         const otp = String(Math.floor(100000 + Math.random() * 900000));
         user.verifyOtp = otp;
-        user.verifyOtpExpireAt = Date.now() + 24 * 60 * 60 * 1000;
+        user.verifyOtpExpireAt = new Date() + 24 * 60 * 60 * 1000;
         await user.save();
 
         // ============== Mail ==============
@@ -171,18 +171,21 @@ export const verifyEmail = async (req,res) => {
         return res.status(400).json({ success: false, message: "Missing Details" });
     }
     try {
+
         const user = await User.findById(userId);
 
         if (!user) {
             return res.status(400).json({ success: false, message: "User not found" });
         }
+
         //  ============ It's Valid OTP ? ============
         if (user.verifyOtp === '' || user.verifyOtp !== otp) {
             return res.status(400).json({ success: false, message: "Invalid OPT" });
 
         }
+
         //  ============ Check Expired OTP ? ============
-        if (user.verifyOtpExpireAt < Date.new()) {
+        if (user.verifyOtpExpireAt < new Date()) {
             return res.status(400).json({ success: false, message: "OTP Expired" });
         }
 
