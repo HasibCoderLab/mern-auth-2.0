@@ -245,9 +245,23 @@ export const sendResetOtp = async (req, res) => {
 
         I
 
-        return res.status(200).json({ success: true })
+        // return res.status(200).json({ success: true })
     } catch (error) {
         return res.status(500).json({ success: false, message: error.message });
 
     }
 }
+
+
+//  ===============  Reset Usr Password ============ 
+  export const  {email,otp , newPassword} = req.body
+  if(!email || !otp || ! newPassword){
+
+    return res.status(400).json({success:false,message:"Email,OTP ,and new password are required"});
+     }
+    try {
+        
+    } catch (error) {
+        return res.status(500).json({success:false , message:error.message});
+    }
+ 
