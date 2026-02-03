@@ -254,7 +254,9 @@ export const sendResetOtp = async (req, res) => {
 
 
 //  ===============  Reset Usr Password ============ 
-export const { email, otp, newPassword } = req.body
+export const resetPassword = async (req,res) =>{
+const { email, otp, newPassword } = req.body;
+
 if (!email || !otp || !newPassword) {
 
     return res.status(400).json({ success: false, message: "Email,OTP ,and new password are required" });
@@ -270,7 +272,7 @@ try {
 
     }
 
-    if (user.resetOtpExpireAt > Date.now()) {
+    if (user.resetOtpExpireAt <   Date.now()) {
         return res.json({ success: false, message: ' OTP Expired' });
 
     }
@@ -278,8 +280,11 @@ try {
     user.password = hashPassword;
     user.resetOtp = "",
         user.resetOtpExpireAt = 0;
-        await user.save()
+        await user.save();
+        return res.status(200).json({ success: true, message: 'Password has been reset successfully' });
 } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
+}
+
 }
 
