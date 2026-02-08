@@ -9,12 +9,19 @@ const Login = () => {
       className='absolute left-5 sm:left-20 top-5 w-28 sm:w-32 cursor-pointer'
       src={assets.logo1} alt="" />
       <div className=" bg-slate-900 p-10 rounded-lg text-indigo-300 w-full sm:w-96 text-sm">
-        <h2>{state === 'Sign Up' ? 'Create Account'  : 'Login'}</h2>
-        <p>{state === 'Sign Up' ? 'Create your account'  : 'Login to youe account'}</p>
+        <h2 className='text-3xl font-semibold text-white text-center mb-3'>{state === 'Sign Up' ? 'Create Account'  : 'Login'}</h2>
+
+        <p className='text-center text-sm mb-6'>{state === 'Sign Up' ? 'Create your account'  : 'Login to your account'}</p>
         {/*  Form Section */}
-       <div className="">
-         <form action=""></form>
+
+         <form action="">
+       <div className="mb-4 flex place-items-center gap-3 w-full px-5 py-2.5 rounded-full bg-[#333A5C]">
+<img src={assets.person_icon} alt="" />
+<input 
+className='bg-transparent boutline-none'
+type="text"  placeholder='Full Name' required />
        </div>
+         </form>
       </div>
     </div>
   )
