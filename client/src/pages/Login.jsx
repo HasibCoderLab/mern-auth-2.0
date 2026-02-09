@@ -37,6 +37,8 @@ const Login = () => {
               className='bg-transparent outline-none'
               type="password" placeholder='Password' required />
           </div>
+          <p className='mb-4 text-indigo-500 cursor-pointer'>Forget Password ?</p>
+          <button className='w-full py-2.5 rounded-full bg-linear-to-r from-indigo-500 to-indigo-900 text-white font-medium'>{state}</button>
         </form>
       </div>
     </div>
