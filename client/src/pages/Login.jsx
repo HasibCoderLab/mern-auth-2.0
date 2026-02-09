@@ -16,7 +16,7 @@ const Login = () => {
 
         <form action="">
           {/* Name */}
-          <div className="mb-4 flex items-items-center gap-3 w-full px-5 py-2.5 rounded-full bg-[#333A5C]">
+          <div className="mb-4 flex items-center gap-3 w-full px-5 py-2.5 rounded-full bg-[#333A5C]">
             <img src={assets.person_icon} alt="" />
             <input
               className='bg-transparent outline-none'
@@ -25,7 +25,7 @@ const Login = () => {
           {/* Email */}
           <div
             className='mb-4 flex items-center gap-3 w-full px-5 py-2.5
-                        rounded-ful1 bg-[#333A5C]'>
+                        rounded-full bg-[#333A5C]'>
             <img src={assets.mail_icon} alt="" />
             <input className='bg-transparent outline-none' type="email"
               placeholder="Full Name" required />
