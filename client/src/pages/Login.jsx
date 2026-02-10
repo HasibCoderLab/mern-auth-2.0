@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router';
 import { assets } from '../assets/assets';
 
 const Login = () => {
+   const navigate = useNavigate();
   const [state, setState] = useState('Sign Up');
   return (
     <div className='flex items-center justify-center min-h-screen px-6 sm:px-0 bg-linear-to-br from-blue-200 to-purple-400'>
