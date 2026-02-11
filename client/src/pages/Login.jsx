@@ -1,14 +1,15 @@
 import React, { useState, useContext } from 'react'
-import { data, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 import { assets } from '../assets/assets';
 import axios from 'axios';
 import { AppContext } from '../components/context/AppContext';
+import { toast } from 'react-toastify';
 
 
 const Login = () => {
 
   const navigate = useNavigate();
-  const { backendUrl, setIsLoggedin, } = useContext(AppContext);
+  const { backendUrl, setIsLoggedin } = useContext(AppContext);
 
   const [state, setState] = useState('Sign Up');
   const [name, setName] = useState('');
@@ -22,19 +23,26 @@ const Login = () => {
     try {
       axios.defaults.withCredentials = true;
       if (state === 'Sign Up') {
-        const {data} = await axios.post(backendUrl+'/api/aith/register' , {name,email,password});
-        
-         if (data.success) {
-        setIsLoggedin(true)
-        navigate('/');
-      }else{
-        alert(data.message);
-      }
-      }
+        const {data} = await axios.post(backendUrl+'/api/auth/register', {name, email, password});
 
-     
+        if (data.success) {
+          setIsLoggedin(true)
+          navigate('/');
+        } else {
+          toast.error(data.message);
+        }
+      } else {
+        const {data} = await axios.post(backendUrl+'/api/auth/login', {email, password});
+
+        if (data.success) {
+          setIsLoggedin(true)
+          navigate('/');
+        } else {
+          toast.error(data.message);
+        }
+      }
     } catch (error) {
-
+      toast.error(error.response?.data?.message || 'An error occurred');
     }
   }
 
@@ -100,15 +108,12 @@ const Login = () => {
 
           {
             state === 'Sign Up' ?
-              (<p className="text-gray-400 text-center text-xs mt-4">Already have an accunt? {``}
+              (<p className="text-gray-400 text-center text-xs mt-4">Already have an account? {``}
                 <span onClick={() => setState("Login")} className="text-blue-400 cursor-pointer">Login here</span> </p>)
               :
-              (<p className="text-gray-400 text-center text-xs mt-4">Don't have an accunt? {``}
+              (<p className="text-gray-400 text-center text-xs mt-4">Don't have an account? {``}
                 <span onClick={() => setState('Sign Up')} className="text-blue-400 cursor-pointer underline">Sign up</span> </p>)
           }
-
-
-
 
         </form>
       </div>
@@ -116,4 +121,4 @@ const Login = () => {
   )
 }
 
-export default Login 
+export default Login

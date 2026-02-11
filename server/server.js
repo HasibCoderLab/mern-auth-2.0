@@ -7,8 +7,11 @@ import { authRouter } from "./routes/auth.Routes.js";
 import { userRouter } from "./routes/userRoutes.js";
 
 dotenv.config()
+const allowedOrigins = ['http://localhost:5173']
 const app = express();
-app.use(cors({credentials:true}));
+app.use(cors({
+    origin:allowedOrigins,credentials:true
+}));
 
 
 app.use(express.json());
