@@ -5,6 +5,10 @@ import { assets } from '../assets/assets';
 const Login = () => { 
   const navigate = useNavigate(); 
   const [state, setState] = useState('Sign Up'); 
+  const [name, setName] = useState(''); 
+  const [email, setEmail] = useState(''); 
+  const [password, setPassword] = useState(''); 
+
   return ( 
     <div className='flex items-center justify-center min-h-screen px-6 sm:px-0 bg-linear-to-br from-blue-200 to-purple-400'> 
       <img 
@@ -24,6 +28,8 @@ const Login = () => {
             <div className="mb-4 flex items-center gap-3 w-full px-5 py-2.5 rounded-full bg-[#333A5C]"> 
               <img src={assets.person_icon} alt="" /> 
               <input 
+              onChange={e=>setName(e.target.value)}
+              value={name}
                 className='bg-transparent outline-none' 
                 type="text" placeholder='Full Name' required /> 
             </div> 
@@ -35,16 +41,22 @@ const Login = () => {
             className='mb-4 flex items-center gap-3 w-full px-5 py-2.5 
                         rounded-full bg-[#333A5C]'> 
             <img src={assets.mail_icon} alt="email-icon" /> 
-            <input className='bg-transparent outline-none' type="email" 
+            <input 
+            onChange={e=>setEmail(e.target.value)}
+            value={email}
+            className='bg-transparent outline-none' type="email" 
               placeholder="Email ID" required /> 
           </div> 
           {/* Password */} 
           <div className="mb-4 flex items-center gap-3 w-full px-5 py-2.5 rounded-full bg-[#333A5C]"> 
             <img src={assets.lock_icon} alt="email-icon" /> 
             <input 
+            onChange={e=>setPassword(e.target.value)}
+            value={password}
               className='bg-transparent outline-none' 
               type="password" placeholder='Password' required /> 
           </div> 
+
           <p className='mb-4 text-indigo-500 cursor-pointer'>Forget Password ?</p> 
           <button className='w-full py-2.5 rounded-full bg-linear-to-r from-indigo-500 to-indigo-900 text-white font-medium cursor-pointer'>{state}</button> 
  
