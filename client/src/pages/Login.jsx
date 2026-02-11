@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react'
-import { useNavigate } from 'react-router';
+import { data, useNavigate } from 'react-router';
 import { assets } from '../assets/assets';
+import axios from 'axios';
 import { AppContext } from '../components/context/AppContext';
 
 
@@ -19,7 +20,19 @@ const Login = () => {
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     try {
-axi
+      axios.defaults.withCredentials = true;
+      if (state === 'Sign Up') {
+        const {data} = await axios.post(backendUrl+'/api/aith/register' , {name,email,password});
+        
+         if (data.success) {
+        setIsLoggedin(true)
+        navigate('/');
+      }else{
+        alert(data.message);
+      }
+      }
+
+     
     } catch (error) {
 
     }
