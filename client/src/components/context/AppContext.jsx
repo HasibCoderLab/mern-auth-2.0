@@ -11,24 +11,21 @@ export const AppContextProvider = (props) => {
     const [isLoggedin, setIsLoggedin] = useState(false);
     const [userData, setUserData] = useState(false);
 
-// ============= GetData =========
-
+// getUserData in AppContext.jsx
 const getUserData = async() => {
     try {
-        axios.defaults.withCredentials = true; 
-        const {data} = await axios.get(backendUrl + '/api/user/data')
-        
-        if (data.success) {
-            setUserData(data.userData)
-        } else {
-            toast.error(data.message)
-        }
+        const {data} = await axios.get(backendUrl+'/api/user/data', {
+            withCredentials: true  
+        });
+        if(data.success) setUserData(data.userData);
+        else toast.error(data.message)
     } catch (error) {
-        // ✅ Fixed - error.response?.data?.message instead of data.message
         toast.error(error.response?.data?.message || 'Failed to fetch user data');
-        console.log(error); // For debugging
+        console.log(error);
     }
 }
+
+
 
 
     const value = {
