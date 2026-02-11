@@ -100,12 +100,15 @@ export const login = async (req, res) => {
         });
 
         return res.status(200).json({
-            user: {
-                name: user.name,
-                email: user.email,
+    success: true,       // <-- add this
+    message: "Login successful",
+    user: {
+        name: user.name,
+        email: user.email,
+    }
+});
 
-            }
-        });
+        
     } catch (error) {
         return res.status(500).json({ success: false, message: error.message });
     }
