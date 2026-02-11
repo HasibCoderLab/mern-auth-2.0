@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react'
-import { useNavigate } from 'react-router';
+import { data, useNavigate } from 'react-router-dom';
 import { assets } from '../assets/assets';
 import axios from 'axios';
 import { AppContext } from '../components/context/AppContext';
@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 const Login = () => {
 
   const navigate = useNavigate();
-  const { backendUrl, setIsLoggedin ,getUserData} = useContext(AppContext);
+  const { backendUrl, setIsLoggedin, getUserData } = useContext(AppContext);
 
   const [state, setState] = useState('Sign Up');
   const [name, setName] = useState('');
@@ -18,35 +18,43 @@ const Login = () => {
 
   // ======= Function ==========
 
-  const onSubmitHandler = async (e) => {
-    e.preventDefault();
-    try {
-      axios.defaults.withCredentials = true;
-      if (state === 'Sign Up') {
-        const {data} = await axios.post(backendUrl+'/api/auth/register', {name, email, password});
+ const onSubmitHandler = async (e) => {
+  e.preventDefault();
+  axios.defaults.withCredentials = true;
 
-        if (data.success) {
-          setIsLoggedin(true)
-          getUserData()
-          navigate('/');
-        } else {
-          toast.error(data.message);
-        }
+  try {
+    if (state === "Sign Up") {
+      const { data } = await axios.post(
+        backendUrl + "/api/auth/register",
+        { name, email, password }
+      );
+
+      if (data.success) {
+        setIsLoggedin(true);
+        navigate("/");
       } else {
-        const {data} = await axios.post(backendUrl+'/api/auth/login', {email, password});
-
-        if (data.success) {
-          setIsLoggedin(true)
-          getUserData()
-          navigate('/');
-        } else {
-          toast.error(data.message);
-        }
+        toast.error(data.message);
       }
-    } catch (error) {
-      toast.error(error.response?.data?.message || 'An error occurred');
+
+    } else {
+      // Login Part
+      const { data } = await axios.post(
+        backendUrl + "/api/auth/login",
+        { email, password }
+      );
+
+      if (data.success) {
+        setIsLoggedin(true);
+        navigate("/");
+      } else {
+        toast.error(data.message);
+      }
     }
+
+  } catch (error) {
+    toast.error(error.response?.data?.message || "Something went wrong");
   }
+};
 
   return (
     <div className='flex items-center justify-center min-h-screen px-6 sm:px-0 bg-linear-to-br from-blue-200 to-purple-400'>
