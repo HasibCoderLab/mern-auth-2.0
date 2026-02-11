@@ -5,10 +5,10 @@ import App from './App.jsx'
 import { BrowserRouter } from 'react-router';
 import { AppContextProvider } from './components/context/AppContext.jsx';
 createRoot(document.getElementById('root')).render(
+   <BrowserRouter>
    <AppContextProvider>
-      <BrowserRouter>
          <App />
-      </BrowserRouter>
    </AppContextProvider>
+      </BrowserRouter>
 
 )
