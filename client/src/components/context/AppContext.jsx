@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 export const AppContext = createContext();
@@ -11,31 +11,36 @@ export const AppContextProvider = (props) => {
     const [isLoggedin, setIsLoggedin] = useState(false);
     const [userData, setUserData] = useState(false);
 
-    const getAuthState = async () =>{
+    const getAuthState = async () => {
         try {
-            const data = await axios.get(backendUrl+'/api/auth/is-auth')
-
+            const { data } = await axios.get(backendUrl + '/api/auth/is-auth')
+            if (data.success) {
+                setIsLoggedin(true)
+                getUserData()
+            }
         } catch (error) {
-            
+
         }
     }
 
-// getUserData in AppContext.jsx
-const getUserData = async() => {
-    try {
-        const data= await axios.get(backendUrl+'/api/user/data', {
-            withCredentials: true  
-        });
-        if(data.success) setUserData(data.userData);
-        else toast.error(data.message)
-    } catch (error) {
-        toast.error(error.response?.data?.message || 'Failed to fetch user data');
-        console.log(error);
+    // getUserData in AppContext.jsx
+    const getUserData = async () => {
+        try {
+            const { data } = await axios.get(backendUrl + '/api/user/data', {
+                withCredentials: true
+            });
+            if (data.success) setUserData(data.userData);
+            else toast.error(data.message)
+        } catch (error) {
+            toast.error(error.response?.data?.message || 'Failed to fetch user data');
+            console.log(error);
+        }
     }
-}
 
 
-
+useEffect(() =>{
+getAuthState()
+},[])
 
     const value = {
         backendUrl,

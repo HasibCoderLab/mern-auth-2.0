@@ -1,14 +1,21 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {useNavigate} from "react-router"
 import {assets} from "../assets/assets"
+import { AppContext } from './context/AppContext'
 const Navbar = () => {
 const navigate =   useNavigate()
+const { userData,  backendUrl, isLoggedin, setIsLoggedin, setUserData,}=useContext(AppContext)
   return (
     <div className='w-full flex justify-between items-center p-4 sm:p-6 sm:px-24 absolute top-0'>
       <img src={assets.logo} alt="Logo" className='w-22  sm:w-32' />
-      <button
+      {
+        userData?
+         <div> {userData.name[0].toUpperCase()}</div>
+         : <button
       onClick={() =>navigate('/login')}
        className='flex items-center gap-2 border border-gray-500 rounded-full px-6 py-2 hover:bg-gray-100 transition-all cursor-pointer'>login <img src={assets.arrow_icon} alt="" /></button>
+      }
+      
     </div>
   )
 }
